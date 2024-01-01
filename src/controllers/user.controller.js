@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from '../utils/ApiError.js'
 import {User} from '../models/user.model.js'
-import {uploadOnCloudinary} from '../utils/fileUpload.js'
+import uploadOnCloudinary from '../utils/fileUpload.js'
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser = asyncHandler( async (req, res) => {
@@ -21,7 +21,7 @@ const registerUser = asyncHandler( async (req, res) => {
 
     
     // check if user already exists..(using username/email)
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{username}, {email}]
     })
 
@@ -37,13 +37,12 @@ const registerUser = asyncHandler( async (req, res) => {
     if(!avatarLocalPath) throw new ApiError(400), "Avatar required"
 
 
-
     //upload to cloudinary (avatar)
     const avatar = await uploadOnCloudinary(avatarLocalPath)
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
-    if(avatar) throw new ApiError(400, "Avatar not uploaded")
 
+    if(!avatar) throw new ApiError(400, "Avatar not uploaded")
 
     // create user object, push to db
     const user = await User.create(
