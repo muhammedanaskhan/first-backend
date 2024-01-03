@@ -28,6 +28,7 @@ router.route('/logout').post(verifyJWT, logoutUser)
 
 router.route('/refresh-token').post(refreshAccessToken)
 
-
+// for change details api
+// check if authenticated user is only changing the fields .... ????
 export default router;
  
