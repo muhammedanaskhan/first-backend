@@ -23,8 +23,6 @@ app.use(cookieParser())
 
 
 
-
- 
 // import routes
 import userRouter from './routes/user.routes.js'
 
@@ -32,5 +30,8 @@ import userRouter from './routes/user.routes.js'
 //routes declaration
  app.use("/api/v1/users", userRouter)
 
+// after 'http://localhost:5000/api/v1/users/...' controle goes to userRouter
+// from where it goes to multiple routes of /users/... like -
+// .../users/signup, .../users/login etc
 
 export {app} 
